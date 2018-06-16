@@ -1,0 +1,81 @@
+ext.deps = [
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        // BUILD                                                                                  //
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
+        'build'      : [
+//                'gradle'        : "com.android.tools.build:gradle:$versions.gradle",
+//                'kotlin'        : "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+        ],
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        // MAIN                                                                                   //
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
+        'libs'       : fileTree(dir: 'libs', include: ['*.jar']),
+        'kotlin'     : [
+                'lib'           : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin",
+                'ktx'           : "androidx.core:core-ktx:$versions.ktx",
+                "coroutines"    : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
+        ],
+        'timber'     : "com.jakewharton.timber:timber:$versions.timber",
+        'support'    : [
+                'compat'        : "com.android.support:support-compat:$versions.suport",
+                'app'           : "com.android.support:appcompat-v7:$versions.suport",
+                'cardView'      : "com.android.support:cardview-v7:$versions.suport",
+                'recyclerView'  : "com.android.support:recyclerview-v7:$versions.suport",
+                'design'        : "com.android.support:design:$versions.suport",
+        ],
+        'constraint' : [
+                'constraint'    : "com.android.support.constraint:constraint-layout:$versions.constraint"
+        ],
+        'dagger'     : [
+                'dagger'        : "com.google.dagger:dagger:$versions.dagger",
+                'compiler'      : "com.google.dagger:dagger-compiler:$versions.dagger",
+                'android'       : "com.google.dagger:dagger-android:$versions.dagger",
+                'support'       : "com.google.dagger:dagger-android-support:$versions.dagger",
+                'processor'     : "com.google.dagger:dagger-android-processor:$versions.dagger",
+        ],
+        'retrofit'   : [
+                'retrofit'      : "com.squareup.retrofit2:retrofit:$versions.retrofit",
+                'gson'          : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
+                'rx'            : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
+        ],
+        'okHttp'     : [
+                'okHttp'        : "com.squareup.okhttp3:okhttp:$versions.okHttp",
+                'logging'       : "com.squareup.okhttp3:logging-interceptor:$versions.okHttp",
+        ],
+        'moshi'      : "com.squareup.moshi:moshi-kotlin:$versions.moshi",
+        'kotshi'     : [
+                'kotshi'        : "se.ansman.kotshi:api:$versions.kotshi",
+                'compiler'      : "se.ansman.kotshi:compiler:$versions.kotshi",
+        ],
+        'rx'         : [
+                'android'       : "io.reactivex.rxjava2:rxandroid:$versions.rxAndroid",
+                'java'          : "io.reactivex.rxjava2:rxjava:$versions.rxJava",
+        ],
+        'ac'         : [
+                'viewModel'     : "android.arch.lifecycle:viewmodel:$versions.architecture",
+                'liveData'      : "android.arch.lifecycle:livedata:$versions.architecture",
+                'compiler'      : "android.arch.lifecycle:compiler:$versions.architecture",
+                'extensions'    : "android.arch.lifecycle:extensions:$versions.architecture",
+                'streams'       : "android.arch.lifecycle:reactivestreams:$versions.architecture",
+                'testing'       : "android.arch.core:core-testing:$versions.architecture",
+                'paging'        : "android.arch.paging:runtime:$versions.paging"
+        ],
+        'picasso'    : "com.squareup.picasso:picasso:$versions.picasso",
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        // TESTING                                                                                //
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
+        'jUnit'      : "junit:junit:$versions.jUnit",
+        'truth'      : "com.google.truth:truth:$versions.truth",
+        'mockito'    : [
+                'core'          : "org.mockito:mockito-core:$versions.mockito",
+                'inline'        : "org.mockito:mockito-inline:$versions.mockito",
+                'powermock'     : "org.powermock:powermock-core:$versions.powermock",
+        ],
+        'robolectric': "org.robolectric:robolectric:$versions.robolectric",
+]

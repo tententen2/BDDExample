@@ -1,0 +1,99 @@
+def Group(Closure closure) {
+    closure.delegate = dependencies
+    return closure
+}
+ext {
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // KOTLIN                                                                                     //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    kotlin = Group {
+        implementation deps.kotlin.lib
+        implementation deps.kotlin.ktx
+        implementation deps.kotlin.coroutines
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // DAGGER                                                                                      //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    dagger = Group {
+        implementation deps.dagger.dagger
+        kapt deps.dagger.compiler
+        implementation deps.dagger.android
+        implementation deps.dagger.support
+        kapt deps.dagger.processor
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // NETWORKING                                                                                 //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    networking = Group {
+        implementation deps.retrofit.retrofit
+        implementation deps.retrofit.rx
+        implementation deps.retrofit.gson
+
+        implementation deps.okHttp.okHttp
+        implementation deps.okHttp.logging
+
+        implementation deps.moshi
+        implementation deps.kotshi.kotshi
+        kapt deps.kotshi.compiler
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // RX                                                                                         //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    rx = Group {
+        implementation deps.rx.android
+        implementation deps.rx.java
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ARCHITECTURE COMPONENTS                                                                    //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    architectureComponents = Group {
+        implementation deps.ac.viewModel
+        implementation deps.ac.liveData
+        implementation deps.ac.extensions
+        implementation deps.ac.streams
+        implementation deps.ac.paging
+        kapt deps.ac.compiler
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // VIEW                                                                                       //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    view = Group {
+        implementation deps.support.compat
+        implementation deps.support.app
+        implementation deps.support.cardView
+        implementation deps.support.recyclerView
+        implementation deps.support.design
+        implementation deps.constraint.constraint
+
+        implementation deps.picasso
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // TESTING                                                                                     //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    testing = Group {
+        testImplementation(deps.jUnit) { exclude group: 'org.hamcrest' }
+        testImplementation deps.truth
+
+        testImplementation deps.mockito.core
+        testImplementation deps.mockito.inline
+        testImplementation deps.mockito.powermock
+
+        testImplementation(deps.robolectric) { exclude group: 'org.assertj' }
+
+        testImplementation deps.ac.testing
+    }
+}

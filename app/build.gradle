@@ -1,0 +1,12 @@
+apply plugin: 'com.android.application'
+apply from: '../config-android.gradle'
+
+dependencies {
+    kotlin()
+    dagger()
+    networking()
+    rx()
+    architectureComponents()
+    view()
+    testing()
+}

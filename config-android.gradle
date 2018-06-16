@@ -1,0 +1,42 @@
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// COMMON FLAGS                                                                                   //
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+android {
+    compileSdkVersion versions.targetSdk
+    defaultConfig {
+        applicationId "com.jirawat.bddexample"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode versions.versionCode
+        versionName versions.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
+kapt {
+    mapDiagnosticLocations = true
+}
