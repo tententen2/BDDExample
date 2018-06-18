@@ -5,13 +5,10 @@ import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.Transformations.switchMap
-import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
-import com.jirawat.bddexample.data.MainActivity.ResponseMainActivity
 import com.jirawat.bddexample.data.MainActivity.Result
-import com.jirawat.bddexample.presentation.login.adapter.DataSourceFactory
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCase
-import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCaseImpl
+import com.jirawat.bddexample.presentation.login.model.NetworkState
 import com.jirawat.bddexample.presentation.login.repository.TestRepository
 
 class ListViewModelImpl(private val state: MediatorLiveData<State>,private val fetchMemesUseCase: FetchMemesUseCase,private val repo: TestRepository) : ListViewModel() {
@@ -21,6 +18,7 @@ class ListViewModelImpl(private val state: MediatorLiveData<State>,private val f
         repo.postsOfList()
     })
     val pageListTest = switchMap(repoResult){ it.pagedList }
+    val networkStateModel = switchMap(repoResult){ it.networkState }
 
     init {
         state.addSource(fetchMemesUseCase.getLiveData(), ::onFetchMemesResult)
@@ -33,6 +31,9 @@ class ListViewModelImpl(private val state: MediatorLiveData<State>,private val f
     }
 
     override fun getState(): LiveData<State> = state
+
+    override fun getNetworkState(): LiveData<NetworkState> = networkStateModel
+
 
     override fun fetchMemes(init: String) {
         if(subredditName.value != init){

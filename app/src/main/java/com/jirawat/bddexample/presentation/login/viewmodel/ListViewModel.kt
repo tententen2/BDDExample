@@ -3,8 +3,8 @@ package com.jirawat.bddexample.presentation.login.viewmodel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.paging.PagedList
-import com.jirawat.bddexample.data.MainActivity.ResponseMainActivity
 import com.jirawat.bddexample.data.MainActivity.Result
+import com.jirawat.bddexample.presentation.login.model.NetworkState
 
 abstract class ListViewModel : ViewModel() {
 
@@ -20,6 +20,8 @@ abstract class ListViewModel : ViewModel() {
     abstract fun fetchMemes(init:String)
 
     abstract fun getListData() : LiveData<PagedList<Result>>
+
+    abstract fun getNetworkState(): LiveData<NetworkState>
 
 
 }

@@ -16,6 +16,7 @@ import com.jirawat.bddexample.data.MainActivity.Result
 import com.jirawat.bddexample.data.network.HttpProvider
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCase
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCaseImpl
+import com.jirawat.bddexample.presentation.login.model.NetworkState
 import com.jirawat.bddexample.presentation.login.repository.PagingRepository
 import com.jirawat.bddexample.presentation.login.viewmodel.ListViewModel
 import com.jirawat.bddexample.presentation.login.viewmodel.ListViewModelFactory
@@ -60,24 +61,12 @@ class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) 
         observe(livemodel.getListData()){
             viewMain.showMemes(it)
         }
-
-//        observe(livemodel.getState()){ onStateChanged(it) }
-//        observe(livemodel.getListData()){ viewMain.showMemes(it)
-//            interact.checkInput("")
-//        }
-    }
-
-
-
-    private fun onStateChanged(state: ListViewModel.State) {
-        when(state){
-            ListViewModel.State.ShowLoading -> stateSwitch.showLoading()
-            ListViewModel.State.ShowContent -> stateSwitch.showContent()
-            is ListViewModel.State.ShowError -> {
-                stateSwitch.showError()
-                Toast.makeText(this,state.error,Toast.LENGTH_LONG).show()
+        observe(livemodel.getNetworkState()){
+            when(it){
+                NetworkState.Loading -> { stateSwitch.showLoading() }
+                is NetworkState.Fail -> { Toast.makeText(this,it.error,Toast.LENGTH_LONG).show() }
+                NetworkState.Loaded -> { stateSwitch.showContent() }
             }
         }
-
     }
 }
