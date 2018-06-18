@@ -2,30 +2,31 @@ package com.jirawat.bddexample.presentation.login.viewmodel
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Transformations
+import android.arch.lifecycle.Transformations.switchMap
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
+import com.jirawat.bddexample.data.MainActivity.ResponseMainActivity
 import com.jirawat.bddexample.data.MainActivity.Result
 import com.jirawat.bddexample.presentation.login.adapter.DataSourceFactory
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCase
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCaseImpl
+import com.jirawat.bddexample.presentation.login.repository.TestRepository
 
-class ListViewModelImpl(private val state: MediatorLiveData<State>,private val fetchMemesUseCase: FetchMemesUseCase) : ListViewModel() {
+class ListViewModelImpl(private val state: MediatorLiveData<State>,private val fetchMemesUseCase: FetchMemesUseCase,private val repo: TestRepository) : ListViewModel() {
 
-    lateinit var listRawData:LiveData<PagedList<Result>>
+    private val subredditName = MutableLiveData<String>()
+    private val repoResult = Transformations.map(subredditName, {
+        repo.postsOfList()
+    })
+    val pageListTest = switchMap(repoResult){ it.pagedList }
 
     init {
         state.addSource(fetchMemesUseCase.getLiveData(), ::onFetchMemesResult)
-        state.value = State.ShowLoading
-        val config = PagedList.Config.Builder()
-                .setPageSize(10)
-//                .setInitialLoadSizeHint(10)
-                .setEnablePlaceholders(false)
-                .build()
-
-        listRawData = LivePagedListBuilder<Int,Result>(DataSourceFactory(fetchMemesUseCase),config).build()
     }
 
-    override fun getListData(): LiveData<PagedList<Result>> = listRawData
+    override fun getListData(): LiveData<PagedList<Result>> = pageListTest
 
     override fun onCleared() {
         fetchMemesUseCase.cleanUp()
@@ -33,15 +34,15 @@ class ListViewModelImpl(private val state: MediatorLiveData<State>,private val f
 
     override fun getState(): LiveData<State> = state
 
-    override fun fetchMemes() {
-//        state.value = State.ShowLoading
-//        fetchMemesUseCase.execute()
+    override fun fetchMemes(init: String) {
+        if(subredditName.value != init){
+            subredditName.value = init
+        }
     }
 
     private fun onFetchMemesResult(result: FetchMemesUseCase.Result?) {
         when (result) {
             is FetchMemesUseCase.Result.OnSuccess -> {
-//                state.value = State.MemesLoaded(result.memes)
                 state.value = State.ShowContent
             }
             is FetchMemesUseCase.Result.OnError -> state.value = State.ShowError(result.error)

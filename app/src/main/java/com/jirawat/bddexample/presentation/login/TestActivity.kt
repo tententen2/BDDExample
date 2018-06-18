@@ -13,8 +13,10 @@ import com.jirawat.bddexample.baseclass.extension.observe
 import com.jirawat.bddexample.baseclass.viewslice.BaseStateSwitcher
 import com.jirawat.bddexample.baseclass.viewslice.StateViewSlice
 import com.jirawat.bddexample.data.MainActivity.Result
+import com.jirawat.bddexample.data.network.HttpProvider
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCase
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCaseImpl
+import com.jirawat.bddexample.presentation.login.repository.PagingRepository
 import com.jirawat.bddexample.presentation.login.viewmodel.ListViewModel
 import com.jirawat.bddexample.presentation.login.viewmodel.ListViewModelFactory
 import com.jirawat.bddexample.presentation.login.viewslice.ListViewSlice
@@ -33,18 +35,19 @@ class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) 
         init()
         setUpViewSlice()
         setUpviewModelObserve()
-        livemodel.fetchMemes()
+        livemodel.fetchMemes("ja")
     }
 
     private fun init() {
         val linearLayoutManager = LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false)
         interact = FetchMemesUseCaseImpl()
-        livemodel = ViewModelProviders.of(this,ListViewModelFactory(interact)).get(ListViewModel::class.java)
+        var api = HttpProvider.get().movieService()
+        var repo = PagingRepository(interact,api)
+        livemodel = ViewModelProviders.of(this,ListViewModelFactory(interact,repo)).get(ListViewModel::class.java)
         stateSwitch = BaseStateSwitcher()
 
         viewMain = ListViewSliceImpl(linearLayoutManager)
-
         stateSwitch.init(lifecycle,getContentView())
         viewMain.init(lifecycle,getContentView())
     }
@@ -54,11 +57,17 @@ class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) 
     }
 
     private fun setUpviewModelObserve() {
-        observe(livemodel.getState()){ onStateChanged(it) }
-        observe(livemodel.getListData()){ viewMain.showMemes(it)
-            interact.checkInput("")
+        observe(livemodel.getListData()){
+            viewMain.showMemes(it)
         }
+
+//        observe(livemodel.getState()){ onStateChanged(it) }
+//        observe(livemodel.getListData()){ viewMain.showMemes(it)
+//            interact.checkInput("")
+//        }
     }
+
+
 
     private fun onStateChanged(state: ListViewModel.State) {
         when(state){
