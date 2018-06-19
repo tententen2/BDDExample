@@ -10,8 +10,10 @@ import com.jirawat.bddexample.data.MainActivity.Result
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCase
 import com.jirawat.bddexample.presentation.login.model.NetworkState
 import com.jirawat.bddexample.presentation.login.repository.TestRepository
+import java.util.*
 
 class ListViewModelImpl(private val state: MediatorLiveData<State>,private val fetchMemesUseCase: FetchMemesUseCase,private val repo: TestRepository) : ListViewModel() {
+
 
     private val subredditName = MutableLiveData<String>()
     private val repoResult = Transformations.map(subredditName, {
@@ -19,6 +21,7 @@ class ListViewModelImpl(private val state: MediatorLiveData<State>,private val f
     })
     val pageListTest = switchMap(repoResult){ it.pagedList }
     val networkStateModel = switchMap(repoResult){ it.networkState }
+    val refreshStateModel = switchMap(repoResult){ it.refreshState }
 
     init {
         state.addSource(fetchMemesUseCase.getLiveData(), ::onFetchMemesResult)
@@ -28,12 +31,18 @@ class ListViewModelImpl(private val state: MediatorLiveData<State>,private val f
 
     override fun onCleared() {
         fetchMemesUseCase.cleanUp()
+
+
+    }
+    override fun refresh() {
+        repoResult.value?.refresh?.invoke()
     }
 
     override fun getState(): LiveData<State> = state
 
     override fun getNetworkState(): LiveData<NetworkState> = networkStateModel
 
+    override fun getRefreshState(): LiveData<NetworkState> = refreshStateModel
 
     override fun fetchMemes(init: String) {
         if(subredditName.value != init){

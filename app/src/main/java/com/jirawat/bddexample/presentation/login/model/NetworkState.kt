@@ -5,5 +5,5 @@ sealed class NetworkState{
         object Loaded : NetworkState()
         object LoadMore : NetworkState()
         object LoadError : NetworkState()
-        data class Fail(var error:String) : NetworkState()
+        data class LoadFail(var error:String) : NetworkState()
 }

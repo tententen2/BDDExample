@@ -57,17 +57,25 @@ class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) 
     }
 
     private fun setUpViewSlice() {
-
+        swipe_refresh.setOnRefreshListener {
+            Log.d("dksaokdosa ","setUpViewSlice() "+Thread.currentThread())
+            livemodel.refresh()
+        }
     }
 
     private fun setUpviewModelObserve() {
+        observe(livemodel.getRefreshState()){
+            swipe_refresh.isRefreshing = it == NetworkState.Loading
+        }
+
+
         observe(livemodel.getListData()){
             viewMain.showMemes(it)
         }
         observe(livemodel.getNetworkState()){
             when(it){
                 NetworkState.Loading -> { stateSwitch.showLoading() }
-                is NetworkState.Fail -> { Toast.makeText(this,it.error,Toast.LENGTH_LONG).show() }
+                is NetworkState.LoadFail -> { stateSwitch.showError() }
                 NetworkState.Loaded -> { stateSwitch.showContent() }
                 NetworkState.LoadMore,NetworkState.LoadError -> { viewMain.showNetworkState(it)}
             }

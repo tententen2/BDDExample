@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.paging.PagedList
 import com.jirawat.bddexample.data.MainActivity.Result
 import com.jirawat.bddexample.presentation.login.model.NetworkState
+import java.util.*
 
 abstract class ListViewModel : ViewModel() {
 
@@ -22,6 +23,10 @@ abstract class ListViewModel : ViewModel() {
     abstract fun getListData() : LiveData<PagedList<Result>>
 
     abstract fun getNetworkState(): LiveData<NetworkState>
+
+    abstract fun getRefreshState() : LiveData<NetworkState>
+
+    abstract fun refresh()
 
 
 }

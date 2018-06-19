@@ -28,6 +28,7 @@ class MemesAdapterImpl(private val retry:() -> Unit) :PagedListAdapter<Result,Re
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        Log.d("kdoaskodksoa","onCreateViewHolder"+Thread.currentThread())
         return when(viewType){
             R.layout.view_holder -> MemeViewHolder.create(parent)
             R.layout.network_state -> NetworkStateLoad.create(parent,retry)
@@ -36,9 +37,19 @@ class MemesAdapterImpl(private val retry:() -> Unit) :PagedListAdapter<Result,Re
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        Log.d("kdoaskodksoa","onBindViewHolder "+Thread.currentThread())
         when(getItemViewType(position)){
             R.layout.view_holder -> (holder as MemeViewHolder).bind(getItem(position)!!)
             R.layout.network_state -> (holder as NetworkStateLoad).bintTo(netWorkState)
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if(payloads.isNotEmpty()){
+            val item = getItem(position)
+            (holder as MemeViewHolder).bind(item ?: Result())
+        }else{
+            onBindViewHolder(holder,position)
         }
     }
 
@@ -61,12 +72,14 @@ class MemesAdapterImpl(private val retry:() -> Unit) :PagedListAdapter<Result,Re
     }
 
     companion object {
-        var diffCallback = object : DiffUtil.ItemCallback<Result>() {
-            override fun areItemsTheSame(oldItem: Result?, newItem: Result?): Boolean {
-                return oldItem?.id == newItem?.id
+        val diffCallback = object : DiffUtil.ItemCallback<Result>() {
+            override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
+                Log.d("kdoaskodksoa","diffCallback "+Thread.currentThread())
+                return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: Result?, newItem: Result?): Boolean {
+            override fun areContentsTheSame(oldItem: Result, newItem: Result): Boolean {
+                Log.d("dksokdoa","areContentsTheSame "+(oldItem == newItem))
                 return oldItem == newItem
             }
 
