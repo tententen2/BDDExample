@@ -31,12 +31,13 @@ class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) 
     lateinit var viewMain:ListViewSlice
     lateinit var interact: FetchMemesUseCase
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
         setUpViewSlice()
         setUpviewModelObserve()
-        livemodel.fetchMemes("ja")
+        livemodel.fetchMemes(INIT_LIST)
     }
 
     private fun init() {
@@ -48,7 +49,9 @@ class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) 
         livemodel = ViewModelProviders.of(this,ListViewModelFactory(interact,repo)).get(ListViewModel::class.java)
         stateSwitch = BaseStateSwitcher()
 
-        viewMain = ListViewSliceImpl(linearLayoutManager)
+        viewMain = ListViewSliceImpl(linearLayoutManager){
+            Toast.makeText(this,"retry",Toast.LENGTH_LONG).show()
+        }
         stateSwitch.init(lifecycle,getContentView())
         viewMain.init(lifecycle,getContentView())
     }
@@ -66,6 +69,7 @@ class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) 
                 NetworkState.Loading -> { stateSwitch.showLoading() }
                 is NetworkState.Fail -> { Toast.makeText(this,it.error,Toast.LENGTH_LONG).show() }
                 NetworkState.Loaded -> { stateSwitch.showContent() }
+                NetworkState.LoadMore,NetworkState.LoadError -> { viewMain.showNetworkState(it)}
             }
         }
     }

@@ -1,20 +1,34 @@
 package com.jirawat.bddexample.presentation.login.adapter
 
 import android.arch.lifecycle.MutableLiveData
+import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import com.jirawat.bddexample.R
 import com.jirawat.bddexample.baseclass.adapter.BaseViewHolder
 import com.jirawat.bddexample.data.MainActivity.Result
 import com.jirawat.bddexample.data.model.Meme
 import com.jirawat.bddexample.presentation.login.viewslice.ListViewSlice
 import kotlinx.android.synthetic.main.view_holder.*
+import kotlinx.android.synthetic.main.view_holder.view.*
 
 
 class MemeViewHolder(
-        itemView: View,private val actionLiveData: MutableLiveData<ListViewSlice.Action>
-) : BaseViewHolder<Result>(itemView) {
+        view: View
+) : RecyclerView.ViewHolder(view) {
+    private val name = view.nametest
 
-    override fun bind(data: Result) {
+    companion object {
+        fun create(parent:ViewGroup):MemeViewHolder{
+            val itemView = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.view_holder, parent, false)
+            return MemeViewHolder(itemView)
+        }
+    }
+
+    fun bind(data: Result) {
         setName(data.originalTitle ?: "")
 //        setImage(data.imageUrl, data.imageWidth, data.imageHeight)
 //        setViewClickListener(actionLiveData, data)
@@ -25,7 +39,7 @@ class MemeViewHolder(
     }
 
     private fun setName(name: String) {
-        nametest.text = name
+        this.name.text = name
     }
 
     private fun setImage(imageUrl: String, imageWidth: Int, imageHeight: Int) {

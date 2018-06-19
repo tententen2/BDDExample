@@ -20,7 +20,7 @@ class TestDataSource(private val fetchMemesUseCase: FetchMemesUseCase,private va
         networkState.postValue(NetworkState.Loading)
         api.getMovieList("1").enqueue(object : Callback<ResponseMainActivity>{
             override fun onFailure(call: Call<ResponseMainActivity>?, t: Throwable?) {
-                networkState.postValue(NetworkState.Fail(t?.localizedMessage ?: ""))
+                networkState.postValue(NetworkState.LoadError)
             }
 
             override fun onResponse(call: Call<ResponseMainActivity>?, response: Response<ResponseMainActivity>?) {
@@ -35,11 +35,12 @@ class TestDataSource(private val fetchMemesUseCase: FetchMemesUseCase,private va
 
         api.getMovieList(params.key.toString()).enqueue(object : Callback<ResponseMainActivity>{
             override fun onFailure(call: Call<ResponseMainActivity>?, t: Throwable?) {
-                networkState.postValue(NetworkState.Fail(t?.localizedMessage ?: ""))
+                networkState.postValue(NetworkState.LoadError)
             }
 
             override fun onResponse(call: Call<ResponseMainActivity>?, response: Response<ResponseMainActivity>?) {
                 callback.onResult(response?.body()?.results!!,((response?.body()?.page ?: 1)+1))
+                networkState.postValue(NetworkState.LoadMore)
             }
 
         })

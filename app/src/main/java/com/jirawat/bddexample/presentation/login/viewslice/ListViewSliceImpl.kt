@@ -10,9 +10,12 @@ import android.util.Log
 import com.jirawat.bddexample.baseclass.viewslice.BaseViewSlice
 import com.jirawat.bddexample.data.MainActivity.Result
 import com.jirawat.bddexample.presentation.login.adapter.MemesAdapterImpl
+import com.jirawat.bddexample.presentation.login.model.NetworkState
 import kotlinx.android.synthetic.main.activity_main.*
 
-class ListViewSliceImpl(private val layoutManager:LinearLayoutManager): BaseViewSlice(),ListViewSlice {
+class ListViewSliceImpl(private val layoutManager:LinearLayoutManager,private val retryCallback:() -> Unit): BaseViewSlice(),ListViewSlice {
+
+
     lateinit var adapter:MemesAdapterImpl
     lateinit var actionLiveData:MutableLiveData<ListViewSlice.Action>
 
@@ -23,7 +26,7 @@ class ListViewSliceImpl(private val layoutManager:LinearLayoutManager): BaseView
     }
 
     fun init(){
-        adapter = MemesAdapterImpl()
+        adapter = MemesAdapterImpl(retryCallback)
         actionLiveData = MutableLiveData()
     }
 
@@ -36,5 +39,9 @@ class ListViewSliceImpl(private val layoutManager:LinearLayoutManager): BaseView
 
     override fun showMemes(memes: PagedList<Result>) {
         adapter.submitList(memes)
+    }
+
+    override fun showNetworkState(state: NetworkState) {
+        adapter.setNetworkState(state)
     }
 }
