@@ -18,7 +18,7 @@ abstract class ListViewModel : ViewModel() {
 
     abstract fun getState(): LiveData<State>
 
-    abstract fun fetchMemes(init:String)
+    abstract fun fetchMemes(init:String): Boolean
 
     abstract fun getListData() : LiveData<PagedList<Result>>
 

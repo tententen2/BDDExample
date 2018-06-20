@@ -14,44 +14,37 @@ import com.jirawat.bddexample.presentation.login.model.NetworkState
 import com.jirawat.bddexample.presentation.login.viewslice.ListViewSlice
 import javax.inject.Inject
 
-class MemesAdapterImpl(private val retry:() -> Unit) :PagedListAdapter<Result,RecyclerView.ViewHolder>(diffCallback) {
+class MemesAdapterImpl(private val retry:() -> Unit) :PagedListAdapter<Result,RecyclerView.ViewHolder>(diff) {
 
     private var netWorkState:NetworkState? = null
     private val actionLiveData: MutableLiveData<ListViewSlice.Action> = MutableLiveData()
 
-    override fun getItemViewType(position: Int):Int{
-        return if(hasExtraRow() && position == itemCount - 1){
-            R.layout.network_state
-        }else{
-            R.layout.view_holder
-        }
-    }
+//    override fun getItemViewType(position: Int):Int{
+//        Log.d("dsakokdoskadsa"," item: "+position)
+////        return if(hasExtraRow() && position == itemCount - 1){
+////            R.layout.network_state
+////        }else{
+//            return R.layout.view_holder
+////        }
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         Log.d("kdoaskodksoa","onCreateViewHolder"+Thread.currentThread())
-        return when(viewType){
-            R.layout.view_holder -> MemeViewHolder.create(parent)
-            R.layout.network_state -> NetworkStateLoad.create(parent,retry)
-            else -> { throw Exception()}
-        }
+//        return when(viewType){
+            return MemeViewHolder.create(parent)
+//            R.layout.network_state -> NetworkStateLoad.create(parent,retry)
+//            else -> { throw Exception()}
+//        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         Log.d("kdoaskodksoa","onBindViewHolder "+Thread.currentThread())
-        when(getItemViewType(position)){
-            R.layout.view_holder -> (holder as MemeViewHolder).bind(getItem(position)!!)
-            R.layout.network_state -> (holder as NetworkStateLoad).bintTo(netWorkState)
-        }
+//        when(getItemViewType(position)){
+            return (holder as MemeViewHolder).bind(getItem(position)!!)
+//            R.layout.network_state -> (holder as NetworkStateLoad).bintTo(netWorkState)
+//        }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
-        if(payloads.isNotEmpty()){
-            val item = getItem(position)
-            (holder as MemeViewHolder).bind(item ?: Result())
-        }else{
-            onBindViewHolder(holder,position)
-        }
-    }
 
     private fun hasExtraRow() = netWorkState != null && netWorkState != NetworkState.Loaded
 
@@ -72,14 +65,12 @@ class MemesAdapterImpl(private val retry:() -> Unit) :PagedListAdapter<Result,Re
     }
 
     companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<Result>() {
-            override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
-                Log.d("kdoaskodksoa","diffCallback "+Thread.currentThread())
-                return oldItem.id == newItem.id
+        val diff = object : DiffUtil.ItemCallback<Result>() {
+            override fun areItemsTheSame(oldItem: Result?, newItem: Result?): Boolean {
+                return oldItem?.id == newItem?.id
             }
 
-            override fun areContentsTheSame(oldItem: Result, newItem: Result): Boolean {
-                Log.d("dksokdoa","areContentsTheSame "+(oldItem == newItem))
+            override fun areContentsTheSame(oldItem: Result?, newItem: Result?): Boolean {
                 return oldItem == newItem
             }
 

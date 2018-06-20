@@ -44,9 +44,12 @@ class ListViewModelImpl(private val state: MediatorLiveData<State>,private val f
 
     override fun getRefreshState(): LiveData<NetworkState> = refreshStateModel
 
-    override fun fetchMemes(init: String) {
+    override fun fetchMemes(init: String): Boolean {
         if(subredditName.value != init){
             subredditName.value = init
+            return true
+        }else{
+            return false
         }
     }
 

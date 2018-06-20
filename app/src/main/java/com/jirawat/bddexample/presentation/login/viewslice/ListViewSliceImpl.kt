@@ -14,6 +14,10 @@ import com.jirawat.bddexample.presentation.login.model.NetworkState
 import kotlinx.android.synthetic.main.activity_main.*
 
 class ListViewSliceImpl(private val layoutManager:LinearLayoutManager,private val retryCallback:() -> Unit): BaseViewSlice(),ListViewSlice {
+    override fun reset() {
+        memes_recycler_view.scrollToPosition(0)
+//        (memes_recycler_view.adapter as? MemesAdapterImpl)?.submitList(null)
+    }
 
 
     lateinit var adapter:MemesAdapterImpl
@@ -42,6 +46,6 @@ class ListViewSliceImpl(private val layoutManager:LinearLayoutManager,private va
     }
 
     override fun showNetworkState(state: NetworkState) {
-        adapter.setNetworkState(state)
+//        adapter.setNetworkState(state)
     }
 }

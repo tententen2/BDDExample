@@ -19,4 +19,6 @@ interface ListViewSlice : ViewSlice {
     fun showMemes(memes: PagedList<Result>)
 
     fun showNetworkState(state:NetworkState)
+
+    fun reset()
 }

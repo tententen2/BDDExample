@@ -6,9 +6,9 @@ import com.jirawat.bddexample.data.MainActivity.Result
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCase
 import com.jirawat.bddexample.presentation.login.repository.ServiceMain
 
-class DataSourceFactory(private val fetchMemesUseCase: FetchMemesUseCase,val api:ServiceMain):DataSource.Factory<Int,Result>() {
+class DataSourceFactory(private val fetchMemesUseCase: FetchMemesUseCase,val api:ServiceMain):DataSource.Factory<String,Result>() {
     val sourceLiveData = MutableLiveData<TestDataSource>()
-    override fun create(): DataSource<Int, Result> {
+    override fun create(): DataSource<String, Result> {
         var datasource = TestDataSource(fetchMemesUseCase,api)
         sourceLiveData.postValue(datasource)
         return datasource

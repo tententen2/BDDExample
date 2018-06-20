@@ -35,8 +35,8 @@ class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
-        setUpViewSlice()
         setUpviewModelObserve()
+        setUpViewSlice()
         livemodel.fetchMemes(INIT_LIST)
     }
 
@@ -58,8 +58,8 @@ class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) 
 
     private fun setUpViewSlice() {
         swipe_refresh.setOnRefreshListener {
-            Log.d("dksaokdosa ","setUpViewSlice() "+Thread.currentThread())
             livemodel.refresh()
+            viewMain.reset()
         }
     }
 
@@ -67,8 +67,6 @@ class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) 
         observe(livemodel.getRefreshState()){
             swipe_refresh.isRefreshing = it == NetworkState.Loading
         }
-
-
         observe(livemodel.getListData()){
             viewMain.showMemes(it)
         }
