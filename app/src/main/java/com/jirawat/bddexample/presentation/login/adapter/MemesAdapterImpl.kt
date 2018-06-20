@@ -40,7 +40,7 @@ class MemesAdapterImpl(private val retry:() -> Unit) :PagedListAdapter<Result,Re
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         Log.d("kdoaskodksoa","onBindViewHolder "+Thread.currentThread())
 //        when(getItemViewType(position)){
-            return (holder as MemeViewHolder).bind(getItem(position)!!)
+            return (holder as MemeViewHolder).bind(getItem(position)!!,holder.itemView.context)
 //            R.layout.network_state -> (holder as NetworkStateLoad).bintTo(netWorkState)
 //        }
     }
