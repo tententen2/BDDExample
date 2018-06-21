@@ -45,7 +45,7 @@ class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) 
                 LinearLayoutManager.VERTICAL, false)
         interact = FetchMemesUseCaseImpl()
         var api = HttpProvider.get().movieService()
-        var repo = PagingRepository(interact,api)
+        var repo = PagingRepository(api)
         livemodel = ViewModelProviders.of(this,ListViewModelFactory(interact,repo)).get(ListViewModel::class.java)
         stateSwitch = BaseStateSwitcher()
 

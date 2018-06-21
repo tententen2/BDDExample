@@ -32,7 +32,6 @@ class ListViewModelImpl(private val state: MediatorLiveData<State>,private val f
     override fun onCleared() {
         fetchMemesUseCase.cleanUp()
 
-
     }
     override fun refresh() {
         repoResult.value?.refresh?.invoke()

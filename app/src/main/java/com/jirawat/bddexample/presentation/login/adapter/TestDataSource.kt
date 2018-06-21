@@ -13,7 +13,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TestDataSource(private val fetchMemesUseCase: FetchMemesUseCase, private val api: ServiceMain) : PageKeyedDataSource<String, Result>() {
+class TestDataSource(private val api: ServiceMain) : PageKeyedDataSource<String, Result>() {
     val networkState = MutableLiveData<NetworkState>()
     val initialLoad = MutableLiveData<NetworkState>()
     private var retry: (() -> Any)? = null

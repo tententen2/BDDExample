@@ -9,11 +9,11 @@ import com.jirawat.bddexample.presentation.login.adapter.DataSourceFactory
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCase
 import java.util.concurrent.Executors
 
-class PagingRepository(private val fetchMemesUseCase: FetchMemesUseCase, private val api:ServiceMain):TestRepository {
+class PagingRepository(private val api:ServiceMain):TestRepository {
 
     @MainThread
     override fun postsOfList(): Listing<Result> {
-        val factory = DataSourceFactory(fetchMemesUseCase,api)
+        val factory = DataSourceFactory(api)
         val pagedList = LivePagedListBuilder(factory,30).setFetchExecutor(Executors.newFixedThreadPool(5)).build()
         val refreshState = Transformations.switchMap(factory.sourceLiveData) {
             it.initialLoad
