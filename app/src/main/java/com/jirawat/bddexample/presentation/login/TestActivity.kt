@@ -13,8 +13,11 @@ import com.jirawat.bddexample.baseclass.extension.observe
 import com.jirawat.bddexample.baseclass.viewslice.BaseStateSwitcher
 import com.jirawat.bddexample.baseclass.viewslice.StateViewSlice
 import com.jirawat.bddexample.data.MainActivity.Result
+import com.jirawat.bddexample.data.network.HttpProvider
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCase
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCaseImpl
+import com.jirawat.bddexample.presentation.login.model.NetworkState
+import com.jirawat.bddexample.presentation.login.repository.PagingRepository
 import com.jirawat.bddexample.presentation.login.viewmodel.ListViewModel
 import com.jirawat.bddexample.presentation.login.viewmodel.ListViewModelFactory
 import com.jirawat.bddexample.presentation.login.viewslice.ListViewSlice
@@ -28,47 +31,52 @@ class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) 
     lateinit var viewMain:ListViewSlice
     lateinit var interact: FetchMemesUseCase
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
-        setUpViewSlice()
         setUpviewModelObserve()
-        livemodel.fetchMemes()
+        setUpViewSlice()
+        livemodel.fetchMemes(INIT_LIST)
     }
 
     private fun init() {
         val linearLayoutManager = LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false)
         interact = FetchMemesUseCaseImpl()
-        livemodel = ViewModelProviders.of(this,ListViewModelFactory(interact)).get(ListViewModel::class.java)
+        var api = HttpProvider.get().movieService()
+        var repo = PagingRepository(interact,api)
+        livemodel = ViewModelProviders.of(this,ListViewModelFactory(interact,repo)).get(ListViewModel::class.java)
         stateSwitch = BaseStateSwitcher()
 
-        viewMain = ListViewSliceImpl(linearLayoutManager)
-
+        viewMain = ListViewSliceImpl(linearLayoutManager){
+            Toast.makeText(this,"retry",Toast.LENGTH_LONG).show()
+        }
         stateSwitch.init(lifecycle,getContentView())
         viewMain.init(lifecycle,getContentView())
     }
 
     private fun setUpViewSlice() {
-
+        swipe_refresh.setOnRefreshListener {
+            livemodel.refresh()
+            viewMain.reset()
+        }
     }
 
     private fun setUpviewModelObserve() {
-        observe(livemodel.getState()){ onStateChanged(it) }
-        observe(livemodel.getListData()){ viewMain.showMemes(it)
-            interact.checkInput("")
+        observe(livemodel.getRefreshState()){
+            swipe_refresh.isRefreshing = it == NetworkState.Loading
         }
-    }
-
-    private fun onStateChanged(state: ListViewModel.State) {
-        when(state){
-            ListViewModel.State.ShowLoading -> stateSwitch.showLoading()
-            ListViewModel.State.ShowContent -> stateSwitch.showContent()
-            is ListViewModel.State.ShowError -> {
-                stateSwitch.showError()
-                Toast.makeText(this,state.error,Toast.LENGTH_LONG).show()
+        observe(livemodel.getListData()){
+            viewMain.showMemes(it)
+        }
+        observe(livemodel.getNetworkState()){
+            when(it){
+                NetworkState.Loading -> { stateSwitch.showLoading() }
+                is NetworkState.LoadFail -> { stateSwitch.showError() }
+                NetworkState.Loaded -> { stateSwitch.showContent() }
+                NetworkState.LoadMore,NetworkState.LoadError -> { viewMain.showNetworkState(it)}
             }
         }
-
     }
 }

@@ -91,6 +91,7 @@ ext {
         testImplementation deps.mockito.core
         testImplementation deps.mockito.inline
         testImplementation deps.mockito.powermock
+        testImplementation deps.retrofit.mock
 
         testImplementation(deps.robolectric) { exclude group: 'org.assertj' }
 

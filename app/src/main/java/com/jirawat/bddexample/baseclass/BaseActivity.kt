@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity
 import dagger.android.AndroidInjection
 
 abstract class BaseActivity : AppCompatActivity() {
+    companion object {
+        const val INIT_LIST = "initlist"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
