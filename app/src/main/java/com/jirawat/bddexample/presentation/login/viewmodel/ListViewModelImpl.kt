@@ -17,7 +17,7 @@ class ListViewModelImpl(private val state: MediatorLiveData<State>,private val f
 
     private val subredditName = MutableLiveData<String>()
     private val repoResult = Transformations.map(subredditName, {
-        repo.postsOfList()
+        repo.postsOfList(20)
     })
     val pageListTest = switchMap(repoResult){ it.pagedList }
     val networkStateModel = switchMap(repoResult){ it.networkState }

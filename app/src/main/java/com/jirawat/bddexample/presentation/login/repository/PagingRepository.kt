@@ -12,9 +12,9 @@ import java.util.concurrent.Executors
 class PagingRepository(private val api:ServiceMain):TestRepository {
 
     @MainThread
-    override fun postsOfList(): Listing<Result> {
+    override fun postsOfList(pageSize:Int): Listing<Result> {
         val factory = DataSourceFactory(api)
-        val pagedList = LivePagedListBuilder(factory,30).setFetchExecutor(Executors.newFixedThreadPool(5)).build()
+        val pagedList = LivePagedListBuilder(factory,pageSize).build()
         val refreshState = Transformations.switchMap(factory.sourceLiveData) {
             it.initialLoad
         }
