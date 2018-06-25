@@ -34,11 +34,41 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Error" />
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/usernameInput"
+                android:inputType="text"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                />
+
+            <EditText
+                android:id="@+id/passwordInput"
+                android:inputType="textPassword"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                />
+
+            <EditText
+                android:id="@+id/phoneInput"
+                android:inputType="phone"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                />
+
+            <Button
+                android:id="@+id/buttonOk"
+                android:text="ok"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
 
     </ViewFlipper>
 

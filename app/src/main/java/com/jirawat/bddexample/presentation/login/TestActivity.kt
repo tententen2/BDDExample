@@ -18,6 +18,7 @@ import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCase
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCaseImpl
 import com.jirawat.bddexample.presentation.login.model.NetworkState
 import com.jirawat.bddexample.presentation.login.repository.PagingRepository
+import com.jirawat.bddexample.presentation.login.state.ErrorTextState
 import com.jirawat.bddexample.presentation.login.viewmodel.ListViewModel
 import com.jirawat.bddexample.presentation.login.viewmodel.ListViewModelFactory
 import com.jirawat.bddexample.presentation.login.viewslice.ListViewSlice
@@ -61,9 +62,25 @@ class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) 
             livemodel.refresh()
             viewMain.reset()
         }
+        buttonOk.setOnClickListener {
+            var getinputcheck = livemodel.getInput()
+            getinputcheck.apply {
+                username = usernameInput.text.toString()
+                password = passwordInput.text.toString()
+                phoneNumber = phoneInput.text.toString()
+            }
+            livemodel.doCheckInput()
+        }
     }
 
     private fun setUpviewModelObserve() {
+        observe(livemodel.getInputState()){
+            when(it){
+                is ErrorTextState.UsernameError -> { usernameInput.error = it.message}
+                ErrorTextState.PasswordError -> { passwordInput.error = "error"}
+                ErrorTextState.PhoneError -> { phoneInput.error = "error"}
+            }
+        }
         observe(livemodel.getRefreshState()){
             swipe_refresh.isRefreshing = it == NetworkState.Loading
         }
@@ -74,7 +91,7 @@ class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) 
             when(it){
                 NetworkState.Loading -> { stateSwitch.showLoading() }
                 is NetworkState.LoadFail -> { stateSwitch.showError() }
-                NetworkState.Loaded -> { stateSwitch.showContent() }
+                NetworkState.Loaded -> { stateSwitch.showError() }
                 NetworkState.LoadMore,NetworkState.LoadError -> { viewMain.showNetworkState(it)}
             }
         }
