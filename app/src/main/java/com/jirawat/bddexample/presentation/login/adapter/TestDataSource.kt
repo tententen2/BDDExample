@@ -13,7 +13,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TestDataSource(private val fetchMemesUseCase: FetchMemesUseCase, private val api: ServiceMain) : PageKeyedDataSource<String, Result>() {
+class TestDataSource(private val api: ServiceMain) : PageKeyedDataSource<String, Result>() {
     val networkState = MutableLiveData<NetworkState>()
     val initialLoad = MutableLiveData<NetworkState>()
     private var retry: (() -> Any)? = null
@@ -29,7 +29,6 @@ class TestDataSource(private val fetchMemesUseCase: FetchMemesUseCase, private v
     override fun loadInitial(params: LoadInitialParams<String>, callback: LoadInitialCallback<String, Result>) {
 //        networkState.postValue(NetworkState.Loading)
         try {
-            Log.d("dksoakdosa",""+params.requestedLoadSize)
             val request = api.getMovieList("1")
             val response = request.execute()
             retry = null
@@ -55,7 +54,6 @@ class TestDataSource(private val fetchMemesUseCase: FetchMemesUseCase, private v
     }
 
     override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<String, Result>) {
-        Log.d("dksoakdoak","loadAfter")
         networkState.postValue(NetworkState.LoadMore)
 //        try{
 //            val request = api.getMovieList(params.key.toString())

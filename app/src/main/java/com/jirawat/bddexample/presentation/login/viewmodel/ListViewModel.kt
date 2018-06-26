@@ -4,7 +4,9 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.paging.PagedList
 import com.jirawat.bddexample.data.MainActivity.Result
+import com.jirawat.bddexample.presentation.login.model.InputCheck
 import com.jirawat.bddexample.presentation.login.model.NetworkState
+import com.jirawat.bddexample.presentation.login.state.ErrorTextState
 import java.util.*
 
 abstract class ListViewModel : ViewModel() {
@@ -26,7 +28,13 @@ abstract class ListViewModel : ViewModel() {
 
     abstract fun getRefreshState() : LiveData<NetworkState>
 
+    abstract fun getInputState() : LiveData<ErrorTextState>
+
+    abstract fun getInput() : InputCheck
+
     abstract fun refresh()
+
+    abstract fun doCheckInput()
 
 
 }

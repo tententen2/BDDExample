@@ -4,6 +4,7 @@ import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCase
+import com.jirawat.bddexample.presentation.login.repository.TestRepository
 import com.jirawat.bddexample.presentation.login.viewmodel.ListViewModel.State
 import com.jirawat.bddexample.presentation.login.viewmodel.ListViewModelImpl
 import org.junit.Before
@@ -22,12 +23,14 @@ class UnitTest {
 
     @Mock
     lateinit var fetchMemesUseCase:FetchMemesUseCase
+    @Mock
+    lateinit var repo:TestRepository
     lateinit var viewmodel:ListViewModelImpl
 
     @Before
     fun setup(){
         setUpLiveData()
-        viewmodel = ListViewModelImpl(state,fetchMemesUseCase)
+        viewmodel = ListViewModelImpl(state,fetchMemesUseCase,repo)
     }
 
     private fun setUpLiveData() {
@@ -37,7 +40,7 @@ class UnitTest {
 
     @Test
     fun `fetch execute`(){
-        viewmodel.fetchMemes()
+        viewmodel.fetchMemes("")
         thenObserverShouldReceiveCorrectStates(State.ShowLoading)
         thenUseCaseShouldHaveNoMoreInteractions()
     }
