@@ -25,7 +25,8 @@ import com.jirawat.bddexample.presentation.login.viewslice.ListViewSlice
 import com.jirawat.bddexample.presentation.login.viewslice.ListViewSliceImpl
 import kotlinx.android.synthetic.main.activity_main.*
 
-class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) :BaseActivity(){
+class TestActivity2(override val layoutResourceId: Int = R.layout.activity_main) :BaseActivity(){
+
     lateinit var livemodel:ListViewModel
     lateinit var stateSwitch: StateViewSlice
     lateinit var viewMain:ListViewSlice
