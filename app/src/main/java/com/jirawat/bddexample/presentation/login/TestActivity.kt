@@ -24,8 +24,9 @@ import com.jirawat.bddexample.presentation.login.viewmodel.ListViewModelFactory
 import com.jirawat.bddexample.presentation.login.viewslice.ListViewSlice
 import com.jirawat.bddexample.presentation.login.viewslice.ListViewSliceImpl
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.network_state.view.*
 
-class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) :BaseActivity(){
+open class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) :BaseActivity(){
     lateinit var livemodel:ListViewModel
     lateinit var stateSwitch: StateViewSlice
     lateinit var viewMain:ListViewSlice
@@ -74,10 +75,17 @@ class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) 
 
     private fun setUpviewModelObserve() {
         observe(livemodel.getInputState()){
+            println(it.toString())
             when(it){
-                is ErrorTextState.UsernameError -> { usernameInput.error = it.message}
-                ErrorTextState.PasswordError -> { passwordInput.error = "error"}
-                ErrorTextState.PhoneError -> { phoneInput.error = "error"}
+                is ErrorTextState.UsernameError -> { usernameInput.error = it.message
+                    println("UsernameError")
+                }
+                ErrorTextState.PasswordError -> { passwordInput.error = "error"
+                    println("PasswordError")
+                }
+                ErrorTextState.PhoneError -> { phoneInput.error = "error"
+                    println("PhoneError")
+                }
             }
         }
         observe(livemodel.getRefreshState()){

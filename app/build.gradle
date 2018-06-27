@@ -9,4 +9,5 @@ dependencies {
     architectureComponents()
     view()
     testing()
+    androidTesting()
 }

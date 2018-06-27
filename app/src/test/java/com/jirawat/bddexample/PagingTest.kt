@@ -5,8 +5,12 @@ import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.paging.PagedList
+import android.view.LayoutInflater
+import android.widget.EditText
+import android.widget.LinearLayout
 import com.jirawat.bddexample.data.MainActivity.Result
 import com.jirawat.bddexample.mock.FakeApi
+import com.jirawat.bddexample.presentation.login.TestActivity2
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCase
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCaseImpl
 import com.jirawat.bddexample.presentation.login.repository.Listing
@@ -25,6 +29,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
+import org.robolectric.Robolectric
 
 
 @RunWith(MockitoJUnitRunner::class)
@@ -40,8 +45,11 @@ class PagingTest {
     private val viewModel = ListViewModelImpl(state,fetchMemesUseCase,repo)
 
 
+
     @Before
     fun init(){
+
+
         var input = viewModel.getInput()
         input.username = ""
         input.password = ""

@@ -78,5 +78,14 @@ ext.deps = [
                 'inline'        : "org.mockito:mockito-inline:$versions.mockito",
                 'powermock'     : "org.powermock:powermock-core:$versions.powermock",
         ],
+        'espresso'   : [
+                'core'          : "com.android.support.test.espresso:espresso-core:$versions.espresso"
+        ],
+        'androidIntegration'     : [
+                'support-annotation' : "com.android.support:support-annotations:$versions.suport",
+                'runner'        : "com.android.support.test:runner:$versions.runner",
+                'rules'         : "com.android.support.test:rules:$versions.runner",
+                'uiautomator'   : "com.android.support.test.uiautomator:uiautomator-v18:$versions.uiautomator",
+        ],
         'robolectric': "org.robolectric:robolectric:$versions.robolectric",
 ]

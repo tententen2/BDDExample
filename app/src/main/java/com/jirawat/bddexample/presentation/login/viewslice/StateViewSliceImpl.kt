@@ -2,6 +2,7 @@ package com.jirawat.bddexample.presentation.login.viewslice
 
 import com.jirawat.bddexample.baseclass.viewslice.BaseViewSlice
 import com.jirawat.bddexample.baseclass.viewslice.StateViewSlice
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 
@@ -18,16 +19,16 @@ class StateViewSliceImpl @Inject constructor(
     }
 
     override fun showContent() {
-        showState(STATE_CONTENT)
+        showState(STATE_LOADING)
     }
 
     override fun showError() {
-        showState(STATE_ERROR)
+        showState(STATE_LOADING)
     }
 
     private fun showState(state: Int) {
-//        if (list_state_view_flipper.displayedChild != state) {
-//            list_state_view_flipper.displayedChild = state
-//        }
+        if (list_state_view_flipper.displayedChild != state) {
+            list_state_view_flipper.displayedChild = state
+        }
     }
 }

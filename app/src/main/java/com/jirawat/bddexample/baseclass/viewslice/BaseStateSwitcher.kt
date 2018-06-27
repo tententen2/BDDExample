@@ -3,8 +3,8 @@ package com.jirawat.bddexample.baseclass.viewslice
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-private const val STATE_CONTENT = 0
 private const val STATE_LOADING = 1
+private const val STATE_CONTENT = 0
 private const val STATE_ERROR = 2
 
 class BaseStateSwitcher:BaseViewSlice(),StateViewSlice {

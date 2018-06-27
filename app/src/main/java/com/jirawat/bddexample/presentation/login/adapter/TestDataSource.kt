@@ -27,7 +27,7 @@ class TestDataSource(private val api: ServiceMain) : PageKeyedDataSource<String,
     }
 
     override fun loadInitial(params: LoadInitialParams<String>, callback: LoadInitialCallback<String, Result>) {
-//        networkState.postValue(NetworkState.Loading)
+        networkState.postValue(NetworkState.Loading)
         try {
             val request = api.getMovieList("1")
             val response = request.execute()
@@ -38,31 +38,10 @@ class TestDataSource(private val api: ServiceMain) : PageKeyedDataSource<String,
         } catch (e: Exception) {
 
         }
-//        api.getMovieList("1").enqueue(object : Callback<ResponseMainActivity>{
-//            override fun onFailure(call: Call<ResponseMainActivity>?, t: Throwable?) {
-//                networkState.postValue(NetworkState.LoadFail(t?.localizedMessage ?: ""))
-//            }
-//
-//            override fun onResponse(call: Call<ResponseMainActivity>?, response: Response<ResponseMainActivity>?) {
-//                callback.onResult(response?.body()?.results!!,0,(response.body()?.page ?: 1)+1)
-//                networkState.postValue(NetworkState.Loaded)
-//                Log.d("dksaokdosa ","onResponse "+Thread.currentThread())
-//
-//            }
-//
-//        })
     }
 
     override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<String, Result>) {
         networkState.postValue(NetworkState.LoadMore)
-//        try{
-//            val request = api.getMovieList(params.key.toString())
-//            val response = request.execute()
-//            networkState.postValue(NetworkState.Loaded)
-//            callback.onResult(response?.body()?.results!!,(response.body()?.page ?: 1)+1)
-//        }catch (e:Exception){
-//
-//        }
 
         api.getMovieList(params.key.toString()).enqueue(object : Callback<ResponseMainActivity> {
             override fun onFailure(call: Call<ResponseMainActivity>?, t: Throwable?) {
@@ -70,6 +49,7 @@ class TestDataSource(private val api: ServiceMain) : PageKeyedDataSource<String,
             }
 
             override fun onResponse(call: Call<ResponseMainActivity>?, response: Response<ResponseMainActivity>?) {
+
                 retry = null
                 initialLoad.postValue(NetworkState.Loaded)
                 networkState.postValue(NetworkState.Loaded)

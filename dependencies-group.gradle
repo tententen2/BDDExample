@@ -93,8 +93,17 @@ ext {
         testImplementation deps.mockito.powermock
         testImplementation deps.retrofit.mock
 
+
         testImplementation(deps.robolectric) { exclude group: 'org.assertj' }
 
         testImplementation deps.ac.testing
+    }
+
+    androidTesting = Group {
+        androidTestImplementation deps.espresso.core
+//        androidTestImplementation deps.androidIntegration.support-annotation
+        androidTestImplementation deps.androidIntegration.runner
+        androidTestImplementation deps.androidIntegration.rules
+        androidTestImplementation deps.androidIntegration.uiautomator
     }
 }
