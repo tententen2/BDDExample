@@ -101,6 +101,8 @@ ext {
 
     androidTesting = Group {
         androidTestImplementation deps.espresso.core
+        androidTestImplementation deps.espresso.contrib
+        androidTestImplementation deps.espresso.intents
 //        androidTestImplementation deps.androidIntegration.support-annotation
         androidTestImplementation deps.androidIntegration.runner
         androidTestImplementation deps.androidIntegration.rules

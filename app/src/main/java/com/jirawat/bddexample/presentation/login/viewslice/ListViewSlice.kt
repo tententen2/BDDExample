@@ -11,7 +11,7 @@ import com.jirawat.bddexample.presentation.login.model.NetworkState
 interface ListViewSlice : ViewSlice {
 
     sealed class Action {
-        data class MemeClicked(val meme: Meme) : Action()
+        data class MemeClicked(val meme: Result) : Action()
     }
 
     fun getAction(): LiveData<Action>

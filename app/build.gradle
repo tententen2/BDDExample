@@ -11,3 +11,6 @@ dependencies {
     testing()
     androidTesting()
 }
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'

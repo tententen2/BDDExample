@@ -1,6 +1,7 @@
 package com.jirawat.bddexample.data.MainActivity
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-
+import kotlinx.android.parcel.Parcelize
 
 
 data class ResponseMainActivity(
@@ -10,6 +11,7 @@ data class ResponseMainActivity(
     @SerializedName("results") var results: ArrayList<Result> = arrayListOf()
 )
 
+@Parcelize
 data class Result(
     @SerializedName("vote_count") val voteCount: Int? = 0,
     @SerializedName("id") val id: Int? = 0,
@@ -25,4 +27,4 @@ data class Result(
     @SerializedName("adult") val adult: Boolean? = false,
     @SerializedName("overview") val overview: String? = "",
     @SerializedName("release_date") val releaseDate: String? = ""
-)
+):Parcelable

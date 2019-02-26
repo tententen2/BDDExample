@@ -16,12 +16,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 class ListViewSliceImpl(private val layoutManager:LinearLayoutManager,private val retryCallback:() -> Unit): BaseViewSlice(),ListViewSlice {
     override fun reset() {
         memes_recycler_view.scrollToPosition(0)
-//        (memes_recycler_view.adapter as? MemesAdapterImpl)?.submitList(null)
     }
 
-
     lateinit var adapter:MemesAdapterImpl
-    lateinit var actionLiveData:MutableLiveData<ListViewSlice.Action>
+    var actionLiveData:MutableLiveData<ListViewSlice.Action> = MutableLiveData()
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun oncreate(){
@@ -31,7 +29,6 @@ class ListViewSliceImpl(private val layoutManager:LinearLayoutManager,private va
 
     fun init(){
         adapter = MemesAdapterImpl(retryCallback)
-        actionLiveData = MutableLiveData()
     }
 
     private fun setUpRecyclerView() {
@@ -46,6 +43,6 @@ class ListViewSliceImpl(private val layoutManager:LinearLayoutManager,private va
     }
 
     override fun showNetworkState(state: NetworkState) {
-//        adapter.setNetworkState(state)
+        adapter.setNetworkState(state)
     }
 }

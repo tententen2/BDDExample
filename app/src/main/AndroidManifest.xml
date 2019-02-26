@@ -3,6 +3,7 @@
     package="com.jirawat.bddexample">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".BddExampleApplication"
         android:allowBackup="true"
@@ -18,6 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".presentation.login.SecActivity"></activity>
     </application>
 
 </manifest>

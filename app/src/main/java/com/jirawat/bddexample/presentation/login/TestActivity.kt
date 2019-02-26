@@ -1,18 +1,17 @@
 package com.jirawat.bddexample.presentation.login
 
-import android.arch.lifecycle.ViewModelProviders
-import android.arch.paging.PagedList
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.widget.Toast
 import com.jirawat.bddexample.R
 import com.jirawat.bddexample.baseclass.BaseActivity
+import android.arch.lifecycle.ViewModelProviders
+import android.arch.paging.PagedList
+import android.support.v7.widget.LinearLayoutManager
 import com.jirawat.bddexample.baseclass.extension.getContentView
 import com.jirawat.bddexample.baseclass.extension.observe
 import com.jirawat.bddexample.baseclass.viewslice.BaseStateSwitcher
 import com.jirawat.bddexample.baseclass.viewslice.StateViewSlice
-import com.jirawat.bddexample.data.MainActivity.Result
 import com.jirawat.bddexample.data.network.HttpProvider
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCase
 import com.jirawat.bddexample.presentation.login.domain.FetchMemesUseCaseImpl
@@ -24,14 +23,12 @@ import com.jirawat.bddexample.presentation.login.viewmodel.ListViewModelFactory
 import com.jirawat.bddexample.presentation.login.viewslice.ListViewSlice
 import com.jirawat.bddexample.presentation.login.viewslice.ListViewSliceImpl
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.network_state.view.*
 
 open class TestActivity(override val layoutResourceId: Int = R.layout.activity_main) :BaseActivity(){
     lateinit var livemodel:ListViewModel
     lateinit var stateSwitch: StateViewSlice
     lateinit var viewMain:ListViewSlice
     lateinit var interact: FetchMemesUseCase
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,15 +74,9 @@ open class TestActivity(override val layoutResourceId: Int = R.layout.activity_m
         observe(livemodel.getInputState()){
             println(it.toString())
             when(it){
-                is ErrorTextState.UsernameError -> { usernameInput.error = it.message
-                    println("UsernameError")
-                }
-                ErrorTextState.PasswordError -> { passwordInput.error = "error"
-                    println("PasswordError")
-                }
-                ErrorTextState.PhoneError -> { phoneInput.error = "error"
-                    println("PhoneError")
-                }
+                is ErrorTextState.UsernameError -> usernameInput.error = it.message
+                ErrorTextState.PasswordError -> passwordInput.error = "error"
+                ErrorTextState.PhoneError -> phoneInput.error = "error"
             }
         }
         observe(livemodel.getRefreshState()){
@@ -98,9 +89,13 @@ open class TestActivity(override val layoutResourceId: Int = R.layout.activity_m
             when(it){
                 NetworkState.Loading -> { stateSwitch.showLoading() }
                 is NetworkState.LoadFail -> { stateSwitch.showError() }
-                NetworkState.Loaded -> { stateSwitch.showError() }
+                NetworkState.Loaded -> { stateSwitch.showContent()   }
                 NetworkState.LoadMore,NetworkState.LoadError -> { viewMain.showNetworkState(it)}
             }
         }
+        observe(viewMain.getAction()){
+            startActivity(SecActivity.start(this,(it as ListViewSlice.Action.MemeClicked).meme))
+        }
+
     }
 }

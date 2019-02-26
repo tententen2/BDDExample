@@ -79,7 +79,9 @@ ext.deps = [
                 'powermock'     : "org.powermock:powermock-core:$versions.powermock",
         ],
         'espresso'   : [
-                'core'          : "com.android.support.test.espresso:espresso-core:$versions.espresso"
+                'core'          : "com.android.support.test.espresso:espresso-core:$versions.espresso",
+                'contrib'       : "com.android.support.test.espresso:espresso-contrib:$versions.espresso",
+                'intents'       : "com.android.support.test.espresso:espresso-intents:$versions.espresso"
         ],
         'androidIntegration'     : [
                 'support-annotation' : "com.android.support:support-annotations:$versions.suport",
