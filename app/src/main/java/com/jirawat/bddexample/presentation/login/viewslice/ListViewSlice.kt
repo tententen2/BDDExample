@@ -5,6 +5,7 @@ import android.arch.paging.PagedList
 import com.jirawat.bddexample.baseclass.viewslice.ViewSlice
 import com.jirawat.bddexample.data.MainActivity.Result
 import com.jirawat.bddexample.data.model.Meme
+import com.jirawat.bddexample.presentation.login.model.NetworkState
 
 
 interface ListViewSlice : ViewSlice {
@@ -16,4 +17,8 @@ interface ListViewSlice : ViewSlice {
     fun getAction(): LiveData<Action>
 
     fun showMemes(memes: PagedList<Result>)
+
+    fun showNetworkState(state:NetworkState)
+
+    fun reset()
 }

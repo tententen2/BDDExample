@@ -4,6 +4,8 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.paging.PagedList
 import com.jirawat.bddexample.data.MainActivity.Result
+import com.jirawat.bddexample.presentation.login.model.NetworkState
+import java.util.*
 
 abstract class ListViewModel : ViewModel() {
 
@@ -16,7 +18,15 @@ abstract class ListViewModel : ViewModel() {
 
     abstract fun getState(): LiveData<State>
 
-    abstract fun fetchMemes()
+    abstract fun fetchMemes(init:String): Boolean
 
     abstract fun getListData() : LiveData<PagedList<Result>>
+
+    abstract fun getNetworkState(): LiveData<NetworkState>
+
+    abstract fun getRefreshState() : LiveData<NetworkState>
+
+    abstract fun refresh()
+
+
 }
